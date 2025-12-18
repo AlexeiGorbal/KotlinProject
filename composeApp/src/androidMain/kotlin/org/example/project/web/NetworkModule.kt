@@ -1,7 +1,7 @@
 package org.example.project.web
 
 import okhttp3.OkHttpClient
-import org.example.project.search.LocationApi
+import org.example.project.location.search.remote.LocationApi
 import org.example.project.weather.remote.WeatherApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

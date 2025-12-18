@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.example.project.search.LocationApi
-import org.example.project.search.LocationInfoEntity
+import org.example.project.location.search.remote.LocationApi
+import org.example.project.location.search.remote.LocationInfoEntity
 import org.example.project.weather.remote.WeatherApi
 import org.example.project.weather.remote.WeatherEntity
 

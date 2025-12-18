@@ -1,4 +1,4 @@
-package org.example.project.search
+package org.example.project.location.search.remote
 
 import retrofit2.http.GET
 import retrofit2.http.Query

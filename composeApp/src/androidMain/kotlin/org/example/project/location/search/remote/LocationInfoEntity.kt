@@ -1,4 +1,4 @@
-package org.example.project.search
+package org.example.project.location.search.remote
 
 import com.google.gson.annotations.SerializedName
 

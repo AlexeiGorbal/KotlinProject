@@ -11,8 +11,6 @@ val appModule = module {
     single { get<NetworkModule>().locationApi }
     single { get<NetworkModule>().weatherApi }
 
-    factory {
-        LocationWeatherViewModel(get(), get())
-        LocationSearchViewModel(get())
-    }
+    factory { LocationWeatherViewModel(get(), get()) }
+    factory { LocationSearchViewModel(get()) }
 }

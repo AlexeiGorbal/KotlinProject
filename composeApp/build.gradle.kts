@@ -45,6 +45,9 @@ kotlin {
 
             implementation("io.insert-koin:koin-core:3.5.3")
             implementation("io.insert-koin:koin-compose:1.1.0")
+            implementation("io.insert-koin:koin-compose-viewmodel:4.0.0")
+
+            implementation("com.google.android.gms:play-services-location:21.3.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

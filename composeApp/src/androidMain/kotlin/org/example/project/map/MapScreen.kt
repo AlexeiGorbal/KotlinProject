@@ -36,7 +36,8 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import org.example.project.location.search.remote.LocationInfoEntity
+import org.example.project.location.remote.LocationInfoEntity
+import org.example.project.viewmodel.LocationWeatherViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

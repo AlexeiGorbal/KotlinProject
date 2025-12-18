@@ -1,12 +1,12 @@
-package org.example.project.map
+package org.example.project.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.example.project.location.search.remote.LocationInfoEntity
-import org.example.project.location.search.remote.LocationService
+import org.example.project.location.remote.LocationInfoEntity
+import org.example.project.location.remote.LocationService
 import org.example.project.weather.remote.WeatherEntity
 import org.example.project.weather.remote.WeatherService
 

@@ -1,11 +1,11 @@
-package org.example.project.location.search
+package org.example.project.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.example.project.location.search.remote.LocationService
+import org.example.project.location.remote.LocationService
 
 class LocationSearchViewModel(
     private val locationService: LocationService,

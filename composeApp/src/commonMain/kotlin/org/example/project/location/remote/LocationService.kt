@@ -1,4 +1,4 @@
-package org.example.project.location.search.remote
+package org.example.project.location.remote
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

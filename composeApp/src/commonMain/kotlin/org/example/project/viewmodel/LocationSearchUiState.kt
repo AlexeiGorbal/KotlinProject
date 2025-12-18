@@ -1,6 +1,6 @@
-package org.example.project.location.search
+package org.example.project.viewmodel
 
-import org.example.project.location.search.remote.LocationInfoEntity
+import org.example.project.location.remote.LocationInfoEntity
 
 sealed class LocationSearchUiState {
 

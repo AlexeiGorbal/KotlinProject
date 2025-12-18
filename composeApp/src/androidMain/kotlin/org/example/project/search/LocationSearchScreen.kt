@@ -1,4 +1,4 @@
-package org.example.project.location.search
+package org.example.project.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.example.project.viewmodel.LocationSearchUiState
+import org.example.project.viewmodel.LocationSearchViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

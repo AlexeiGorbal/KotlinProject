@@ -1,4 +1,4 @@
-package org.example.project.location.search.remote
+package org.example.project.location.remote
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

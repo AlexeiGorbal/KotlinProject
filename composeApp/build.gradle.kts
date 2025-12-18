@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.secrets.gradle.plugin)
+    kotlin("plugin.serialization") version "2.0.21"
     kotlin("kapt")
 }
 
@@ -32,6 +33,17 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
+            implementation(libs.maps.compose)
+            implementation(libs.maps.compose.utils)
+            implementation(libs.maps.compose.widgets)
+            implementation(libs.play.services.maps)
+
+            implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
+            implementation("com.google.android.gms:play-services-location:21.3.0")
+
+            implementation("io.ktor:ktor-client-okhttp:3.0.1")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -43,14 +55,23 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            implementation("io.insert-koin:koin-core:3.5.3")
-            implementation("io.insert-koin:koin-compose:1.1.0")
+            implementation("io.insert-koin:koin-core:4.0.0")
+            implementation("io.insert-koin:koin-compose:4.0.0")
             implementation("io.insert-koin:koin-compose-viewmodel:4.0.0")
 
-            implementation("com.google.android.gms:play-services-location:21.3.0")
+            implementation("io.ktor:ktor-client-core:3.0.1")
+            implementation("io.ktor:ktor-client-content-negotiation:3.0.1")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.1")
+
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+        val wasmJsMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-js:3.0.1")
+            }
         }
     }
 }
@@ -87,21 +108,6 @@ android {
     buildFeatures {
         buildConfig = true
     }
-}
-
-dependencies {
-    debugImplementation(compose.uiTooling)
-
-    implementation(libs.maps.compose)
-    implementation(libs.maps.compose.utils)
-    implementation(libs.maps.compose.widgets)
-    implementation(libs.play.services.maps)
-
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
 
 secrets {

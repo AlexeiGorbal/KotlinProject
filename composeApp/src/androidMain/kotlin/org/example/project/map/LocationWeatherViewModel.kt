@@ -5,14 +5,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.example.project.location.search.remote.LocationApi
 import org.example.project.location.search.remote.LocationInfoEntity
-import org.example.project.weather.remote.WeatherApi
+import org.example.project.location.search.remote.LocationService
 import org.example.project.weather.remote.WeatherEntity
+import org.example.project.weather.remote.WeatherService
 
 class LocationWeatherViewModel(
-    private val locationApi: LocationApi,
-    private val weatherApi: WeatherApi,
+    private val locationService: LocationService,
+    private val weatherService: WeatherService,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<WeatherEntity?>(null)
@@ -26,20 +26,20 @@ class LocationWeatherViewModel(
 
     fun loadWeather(locationId: Long) {
         viewModelScope.launch {
-            _uiState.value = weatherApi.getWeather("London")
+            _uiState.value = weatherService.getWeather("London")
         }
     }
 
     fun onLocationSelectedOnMap(lat: Double, lon: Double) {
         viewModelScope.launch {
-            val location = locationApi.getLocationByCoordinates("$lat,$lon")
+            val location = locationService.getLocationByCoordinates("$lat,$lon")
             _selectedLocation.value = location.firstOrNull()
         }
     }
 
     fun onUserLocationAvailable(lat: Double, lon: Double) {
         viewModelScope.launch {
-            val location = locationApi.getLocationByCoordinates("$lat,$lon").firstOrNull()
+            val location = locationService.getLocationByCoordinates("$lat,$lon").firstOrNull()
             _userLocation.value = location
             _selectedLocation.value = location
 

@@ -1,12 +1,14 @@
 package org.example.project.location.search.remote
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class LocationInfoEntity(
-    @SerializedName("id") val id: Long,
-    @SerializedName("name") val name: String,
-    @SerializedName("region") val region: String,
-    @SerializedName("country") val country: String,
-    @SerializedName("lat") val lat: Double,
-    @SerializedName("lon") val lon: Double
+    @SerialName("id") val id: Long,
+    @SerialName("name") val name: String,
+    @SerialName("region") val region: String,
+    @SerialName("country") val country: String,
+    @SerialName("lat") val lat: Double,
+    @SerialName("lon") val lon: Double
 )

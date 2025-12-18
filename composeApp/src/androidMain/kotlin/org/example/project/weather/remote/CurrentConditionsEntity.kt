@@ -1,9 +1,11 @@
 package org.example.project.weather.remote
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CurrentConditionsEntity(
-    @SerializedName("temp_f") val tempF: Float,
-    @SerializedName("feelslike_f") val feelsLikeF: Float,
-    @SerializedName("condition") val weatherState: WeatherStateEntity
+    @SerialName("temp_f") val tempF: Float,
+    @SerialName("feelslike_f") val feelsLikeF: Float,
+    @SerialName("condition") val weatherState: WeatherStateEntity
 )

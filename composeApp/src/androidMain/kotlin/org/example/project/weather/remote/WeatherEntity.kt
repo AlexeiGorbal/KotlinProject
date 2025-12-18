@@ -1,14 +1,17 @@
 package org.example.project.weather.remote
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class WeatherEntity(
-    @SerializedName("location") val location: ForecastLocationEntity,
-    @SerializedName("current") val current: CurrentConditionsEntity,
-    @SerializedName("forecast") val forecast: ForecastEntity,
+    @SerialName("location") val location: ForecastLocationEntity,
+    @SerialName("current") val current: CurrentConditionsEntity,
+    @SerialName("forecast") val forecast: ForecastEntity,
 ) {
 
+    @Serializable
     data class ForecastEntity(
-        @SerializedName("forecastday") val days: List<DayWeatherEntity>
+        @SerialName("forecastday") val days: List<DayWeatherEntity>
     )
 }

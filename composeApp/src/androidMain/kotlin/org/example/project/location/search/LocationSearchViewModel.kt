@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.example.project.location.search.remote.LocationApi
+import org.example.project.location.search.remote.LocationService
 
 class LocationSearchViewModel(
-    private val api: LocationApi
+    private val locationService: LocationService,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<LocationSearchUiState>(LocationSearchUiState.Initial)
@@ -28,7 +28,7 @@ class LocationSearchViewModel(
         _uiState.value = LocationSearchUiState.Loading
 
         viewModelScope.launch {
-            val result = api.getLocationsByInput(userInput)
+            val result = locationService.getLocationsByInput(userInput)
             _uiState.value = if (result.isEmpty()) {
                 LocationSearchUiState.NoResults
             } else {

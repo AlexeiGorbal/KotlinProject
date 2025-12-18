@@ -8,6 +8,7 @@ pluginManagement {
                 includeGroupAndSubgroups("androidx")
                 includeGroupAndSubgroups("com.android")
                 includeGroupAndSubgroups("com.google")
+                includeGroupAndSubgroups("io.coil-kt")
             }
         }
         mavenCentral()
@@ -22,8 +23,12 @@ dependencyResolutionManagement {
                 includeGroupAndSubgroups("androidx")
                 includeGroupAndSubgroups("com.android")
                 includeGroupAndSubgroups("com.google")
+                includeGroupAndSubgroups("io.coil-kt")
             }
         }
+
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+
         mavenCentral()
     }
 }

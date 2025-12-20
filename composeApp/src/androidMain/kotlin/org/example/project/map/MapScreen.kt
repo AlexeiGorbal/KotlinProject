@@ -87,7 +87,7 @@ fun MapScreen(
                 markerState.position = location
             }
         ) {
-            Marker(state = markerState)
+            if(selectedLocation!=null) Marker(state = markerState)
         }
 
         Button(

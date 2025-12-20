@@ -44,6 +44,9 @@ kotlin {
             implementation("com.google.android.gms:play-services-location:21.3.0")
 
             implementation("io.ktor:ktor-client-okhttp:3.0.1")
+
+            implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+            implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
         }
         commonMain.dependencies {
             implementation(compose.runtime)

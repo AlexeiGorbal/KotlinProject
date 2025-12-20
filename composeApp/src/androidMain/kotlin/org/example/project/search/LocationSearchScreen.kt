@@ -1,6 +1,7 @@
 package org.example.project.search
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,16 +21,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.example.project.viewmodel.LocationSearchUiState
 import org.example.project.viewmodel.LocationSearchViewModel
+import org.example.project.viewmodel.LocationWeatherViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LocationSearchScreen(
-    viewModel: LocationSearchViewModel = koinViewModel()
+    onNavToMapScreen: (String) -> Unit,
+    viewModel: LocationSearchViewModel = koinViewModel(),
+    weatherViewModel: LocationWeatherViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val text by viewModel.text.collectAsStateWithLifecycle()
-
 
     Column(modifier = Modifier.padding(top = 50.dp)) {
         OutlinedTextField(
@@ -54,6 +57,10 @@ fun LocationSearchScreen(
                                 .height(30.dp)
                                 .fillMaxWidth()
                                 .background(Color.Blue)
+                                .clickable {
+                                    weatherViewModel.onLocationSelected(location)
+                                    onNavToMapScreen(location.name)
+                                }
                         ) {
                             Text(text = location.name, color = Color.White)
                         }

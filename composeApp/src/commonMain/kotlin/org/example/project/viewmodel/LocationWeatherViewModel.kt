@@ -117,4 +117,31 @@ class LocationWeatherViewModel(
     fun onLocationDeselected() {
         _selectedLocation.value = null
     }
+
+    private val _searchUiState =
+        MutableStateFlow<LocationSearchUiState>(LocationSearchUiState.Initial)
+    val searchUiState = _searchUiState.asStateFlow()
+
+    private val _text = MutableStateFlow("")
+    val text = _text.asStateFlow()
+
+    fun searchLocations(userInput: String) {
+        _text.value = userInput
+
+        if (userInput.isBlank()) {
+            _searchUiState.value = LocationSearchUiState.NoResults
+            return
+        }
+
+        _searchUiState.value = LocationSearchUiState.Loading
+
+        viewModelScope.launch {
+            val result = locationService.getLocationsByInput(userInput)
+            _searchUiState.value = if (result.isEmpty()) {
+                LocationSearchUiState.NoResults
+            } else {
+                LocationSearchUiState.Suggestions(result)
+            }
+        }
+    }
 }

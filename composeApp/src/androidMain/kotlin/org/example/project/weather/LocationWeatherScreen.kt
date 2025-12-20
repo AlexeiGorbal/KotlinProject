@@ -1,11 +1,13 @@
 package org.example.project.weather
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -40,37 +42,50 @@ fun LocationWeatherScreen(
     viewModel: LocationWeatherViewModel = koinViewModel()
 ) {
     val scaffoldState = rememberBottomSheetScaffoldState()
+    val selectedLocation by viewModel.selectedLocation.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(locationId) {
-        if (locationId.isNotEmpty()) viewModel.loadWeather(locationId)
+    LaunchedEffect(selectedLocation) {
+        selectedLocation?.name?.let { viewModel.loadWeather(it) }
     }
 
-    uiState?.let { weather ->
-        BottomSheetScaffold(
-            modifier = Modifier.fillMaxHeight(),
-            scaffoldState = scaffoldState,
-            sheetPeekHeight = if (locationId.isEmpty()) 0.dp else 100.dp,
-            sheetContent = {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    CurrentConditionsItem(weather)
-
-                    Text(
-                        text = "${weather.location.region} ${weather.location.country}",
-                    )
-
-                    val day = weather.forecast.days.first()
-                    HourlyForecastRow(day.hours)
-
-                    LazyColumn() {
-                        items(weather.forecast.days) { dayWeather ->
-                            ForecastWeatherItem(dayWeather)
-                        }
-                    }
-                }
+    BottomSheetScaffold(
+        modifier = Modifier.fillMaxHeight(),
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = if (locationId.isEmpty()) 0.dp else 100.dp,
+        sheetContent = {
+            if (selectedLocation != null) {
+                uiState?.let { weather -> WeatherSheetContent(weather) }
+            } else {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                )
             }
-        ) {
-            content()
+        }
+    ) {
+        content()
+    }
+}
+
+
+@Composable
+fun WeatherSheetContent(weather: WeatherEntity) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        CurrentConditionsItem(weather)
+
+        Text(
+            text = "${weather.location.region} ${weather.location.country}",
+        )
+
+        val day = weather.forecast.days.first()
+        HourlyForecastRow(day.hours)
+
+        LazyColumn() {
+            items(weather.forecast.days) { dayWeather ->
+                ForecastWeatherItem(dayWeather)
+            }
         }
     }
 }

@@ -36,6 +36,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
+    onNavToSearchScreen: () -> Unit,
     viewModel: LocationWeatherViewModel = koinViewModel()
 ) {
     val markerState = remember { MarkerState() }
@@ -87,7 +88,7 @@ fun MapScreen(
                 markerState.position = location
             }
         ) {
-            if(selectedLocation!=null) Marker(state = markerState)
+            if (selectedLocation != null) Marker(state = markerState)
         }
 
         Button(
@@ -96,6 +97,11 @@ fun MapScreen(
             },
             modifier = Modifier.padding(top = 70.dp)
         ) { Text("Найти меня") }
+
+        Button(
+            onClick = onNavToSearchScreen,
+            modifier = Modifier.padding(top = 70.dp)
+        ) { Text("search") }
     }
 }
 

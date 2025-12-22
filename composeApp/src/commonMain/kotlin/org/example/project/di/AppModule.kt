@@ -1,5 +1,6 @@
 package org.example.project.di
 
+import org.example.project.local.FirebaseLocationService
 import org.example.project.location.remote.LocationService
 import org.example.project.viewmodel.LocationSearchViewModel
 import org.example.project.viewmodel.LocationWeatherViewModel
@@ -12,7 +13,8 @@ val appModule = module {
     single { NetworkModule().httpClient }
     single { WeatherService(get()) }
     single { LocationService(get()) }
+    single { FirebaseLocationService() }
 
-    viewModel { LocationWeatherViewModel(get(), get()) }
+    viewModel { LocationWeatherViewModel(get(), get(),get()) }
     viewModel { LocationSearchViewModel(get()) }
 }

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "672157854590",
+    "firebase_url": "https://weather-kmp-default-rtdb.firebaseio.com",
+    "project_id": "weather-kmp",
+    "storage_bucket": "weather-kmp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672157854590:android:1cde1bf4903fa29fc1612f",
+        "android_client_info": {
+          "package_name": "org.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoU5MYv1FHvJLTGY8LIF768zPDzx3s0_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

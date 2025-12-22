@@ -8,23 +8,18 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.secrets.gradle.plugin)
     alias(libs.plugins.kotlin.serialization)
+    id("com.google.gms.google-services")
     kotlin("kapt")
 }
 
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
     js {
-        browser()
-        binaries.executable()
-    }
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
         browser()
         binaries.executable()
     }
@@ -69,14 +64,19 @@ kotlin {
             implementation("io.ktor:ktor-client-content-negotiation:3.0.1")
             implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.1")
 
+            implementation("dev.gitlive:firebase-database:2.1.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
-        val wasmJsMain by getting {
+
+        val jsMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-js:3.0.1")
+                implementation(compose.html.core)
+                implementation("dev.gitlive:firebase-database:2.1.0")
             }
         }
     }
@@ -107,8 +107,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
@@ -119,4 +119,12 @@ android {
 secrets {
     propertiesFileName = "secrets.properties"
     defaultPropertiesFileName = "local.defaults.properties"
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile>().configureEach {
+    compilerOptions.freeCompilerArgs.add("-Xir-per-module")
+}
+
+tasks.withType<ProcessResources>().configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

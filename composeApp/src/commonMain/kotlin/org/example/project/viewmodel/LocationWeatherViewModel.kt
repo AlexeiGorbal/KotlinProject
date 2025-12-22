@@ -2,9 +2,13 @@ package org.example.project.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import org.example.project.local.FirebaseLocationService
+import org.example.project.local.LocationInfo
 import org.example.project.location.remote.LocationInfoEntity
 import org.example.project.location.remote.LocationService
 import org.example.project.weather.remote.WeatherEntity
@@ -13,40 +17,8 @@ import org.example.project.weather.remote.WeatherService
 class LocationWeatherViewModel(
     private val locationService: LocationService,
     private val weatherService: WeatherService,
+    private val firebaseService: FirebaseLocationService,
 ) : ViewModel() {
-
-    /*private val _uiState = MutableStateFlow<WeatherEntity?>(null)
-    val uiState = _uiState.asStateFlow()
-
-    private val _selectedLocation = MutableStateFlow<LocationInfoEntity?>(null)
-    val selectedLocation = _selectedLocation.asStateFlow()
-
-    private val _userLocation = MutableStateFlow<LocationInfoEntity?>(null)
-    val userLocation = _userLocation.asStateFlow()
-
-    fun loadWeather(locationId: String) {
-        viewModelScope.launch {
-            _uiState.value = weatherService.getWeather(locationId)
-        }
-    }
-
-    fun onLocationSelectedOnMap(lat: Double, lon: Double) {
-        viewModelScope.launch {
-            val location = locationService.getLocationByCoordinates("$lat,$lon")
-            _selectedLocation.value = location.firstOrNull()
-        }
-    }
-
-    fun onUserLocationAvailable(lat: Double, lon: Double) {
-        viewModelScope.launch {
-            val location = locationService.getLocationByCoordinates("$lat,$lon").firstOrNull()
-            _userLocation.value = location
-            _selectedLocation.value = location
-
-            *//*val savedLocation = savedLocationsRepository.getLocationById(location.id)
-            _isLocationSaved.value = savedLocation != null*//*
-        }
-    }*/
 
     private val _selectedLocation = MutableStateFlow<LocationInfoEntity?>(null)
     val selectedLocation = _selectedLocation.asStateFlow()
@@ -57,11 +29,18 @@ class LocationWeatherViewModel(
     private val _uiState = MutableStateFlow<WeatherEntity?>(null)
     val uiState = _uiState.asStateFlow()
 
-    /*val locations: Flow<List<LocationInfo>>
-        get() = savedLocationsRepository.getLocations()*/
+    val savedLocations: Flow<List<LocationInfo>>
+        get() = firebaseService.getLocations()
 
     private val _isLocationSaved = MutableStateFlow<Boolean?>(null)
     val isLocationSaved = _isLocationSaved.asStateFlow()
+
+    fun removeLocation(index: Int) {
+        viewModelScope.launch {
+            val list = savedLocations.firstOrNull() ?: return@launch
+            firebaseService.removeLocation(list[index].id)
+        }
+    }
 
     fun loadWeather(locationId: String) {
         viewModelScope.launch {
@@ -72,12 +51,13 @@ class LocationWeatherViewModel(
 
     fun onUserLocationAvailable(lat: Double, lon: Double) {
         viewModelScope.launch {
-            val location = locationService.getLocationByCoordinates("$lat,$lon").firstOrNull()
+            val location =
+                locationService.getLocationByCoordinates("$lat,$lon").firstOrNull() ?: return@launch
             _userLocation.value = location
             _selectedLocation.value = location
 
-            /*val savedLocation = savedLocationsRepository.getLocationById(location.id)
-            _isLocationSaved.value = savedLocation != null*/
+            val savedLocation = firebaseService.getLocationById(location.id)
+            _isLocationSaved.value = savedLocation != null
         }
     }
 
@@ -85,34 +65,35 @@ class LocationWeatherViewModel(
         viewModelScope.launch {
             _selectedLocation.value = location
 
-            /*val savedLocation = savedLocationsRepository.getLocationById(location.id)
-            _isLocationSaved.value = savedLocation != null*/
+            val savedLocation = firebaseService.getLocationById(location.id)
+            _isLocationSaved.value = savedLocation != null
         }
     }
 
     fun onLocationSelectedOnMap(lat: Double, lon: Double) {
         viewModelScope.launch {
-            val location = locationService.getLocationByCoordinates("$lat,$lon").firstOrNull()
+            val location =
+                locationService.getLocationByCoordinates("$lat,$lon").firstOrNull() ?: return@launch
             _selectedLocation.value = location
 
-            /*val savedLocation = savedLocationsRepository.getLocationById(location.id)
-            _isLocationSaved.value = savedLocation != null*/
+            val savedLocation = firebaseService.getLocationById(location.id)
+            _isLocationSaved.value = savedLocation != null
         }
     }
 
-    /*fun onSelectedLocationSavedStateChanged() {
+    fun onSelectedLocationSavedStateChanged() {
         viewModelScope.launch {
             val selectedLocation = _selectedLocation.value ?: return@launch
-            val savedLocation = savedLocationsRepository.getLocationById(selectedLocation.id)
+            val savedLocation = firebaseService.getLocationById(selectedLocation.id)
             if (savedLocation == null) {
-                savedLocationsRepository.addLocation(selectedLocation)
+                firebaseService.addLocation(selectedLocation.toModel())
                 _isLocationSaved.value = true
             } else {
-                savedLocationsRepository.removeLocation(selectedLocation)
+                firebaseService.removeLocation(selectedLocation.id)
                 _isLocationSaved.value = false
             }
         }
-    }*/
+    }
 
     fun onLocationDeselected() {
         _selectedLocation.value = null
@@ -144,4 +125,26 @@ class LocationWeatherViewModel(
             }
         }
     }
+}
+
+fun LocationInfoEntity.toModel(): LocationInfo {
+    return LocationInfo(
+        id = id ?: 1,
+        name,
+        region,
+        country,
+        lat,
+        lon
+    )
+}
+
+fun LocationInfo.toEntity(): LocationInfoEntity {
+    return LocationInfoEntity(
+        id = id ?: 1,
+        name,
+        region,
+        country,
+        lat,
+        lon
+    )
 }

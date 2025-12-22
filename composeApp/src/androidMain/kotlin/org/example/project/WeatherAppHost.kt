@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.example.project.map.MapScreen
+import org.example.project.saved.SavedLocationScreen
 import org.example.project.search.LocationSearchScreen
 import org.example.project.viewmodel.LocationWeatherViewModel
 import org.example.project.weather.LocationWeatherScreen
@@ -36,6 +37,9 @@ fun WeatherAppHost(
                         onNavToSearchScreen = {
                             navController.navigate(LocationSearchRoute)
                         },
+                        onNavToSavedScreen = {
+                            navController.navigate(SavedLocationRoute)
+                        },
                         viewModel = sharedViewModel
                     )
                 }
@@ -50,6 +54,15 @@ fun WeatherAppHost(
                 weatherViewModel = sharedViewModel
             )
         }
+
+        composable<SavedLocationRoute> {
+            SavedLocationScreen(
+                onNavToMapScreen = { locationId ->
+                    navController.navigate(MapRoute(locationId = locationId))
+                },
+                viewModel = sharedViewModel
+            )
+        }
     }
 }
 
@@ -58,3 +71,6 @@ data class MapRoute(val locationId: String)
 
 @Serializable
 object LocationSearchRoute
+
+@Serializable
+object SavedLocationRoute

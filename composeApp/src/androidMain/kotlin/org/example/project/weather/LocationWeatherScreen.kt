@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
@@ -24,10 +25,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import org.example.project.R
 import org.example.project.viewmodel.LocationWeatherViewModel
 import org.example.project.weather.remote.DayWeatherEntity
 import org.example.project.weather.remote.HourWeatherEntity
@@ -55,7 +58,11 @@ fun LocationWeatherScreen(
         sheetPeekHeight = if (locationId.isEmpty()) 0.dp else 100.dp,
         sheetContent = {
             if (selectedLocation != null) {
-                uiState?.let { weather -> WeatherSheetContent(weather) }
+                uiState?.let { weather ->
+                    WeatherSheetContent(
+                        weather = weather,
+                        onSaveLocationClick = { viewModel.onSelectedLocationSavedStateChanged() })
+                }
             } else {
                 Box(
                     Modifier
@@ -71,9 +78,9 @@ fun LocationWeatherScreen(
 
 
 @Composable
-fun WeatherSheetContent(weather: WeatherEntity) {
+fun WeatherSheetContent(weather: WeatherEntity, onSaveLocationClick: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
-        CurrentConditionsItem(weather)
+        CurrentConditionsItem(weather = weather, onSaveLocationClick = onSaveLocationClick)
 
         Text(
             text = "${weather.location.region} ${weather.location.country}",
@@ -91,7 +98,7 @@ fun WeatherSheetContent(weather: WeatherEntity) {
 }
 
 @Composable
-fun CurrentConditionsItem(weather: WeatherEntity) {
+fun CurrentConditionsItem(weather: WeatherEntity, onSaveLocationClick: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth()) {
         AsyncImage(
             model = "https:${weather.current.weatherState.icon}",
@@ -116,6 +123,12 @@ fun CurrentConditionsItem(weather: WeatherEntity) {
                 modifier = Modifier.padding(16.dp)
             )
         }
+
+        Icon(
+            painter = painterResource(R.drawable.ic_launcher_background),
+            contentDescription = null,
+            modifier = Modifier.clickable { onSaveLocationClick() }
+        )
     }
 }
 

@@ -6,6 +6,7 @@ import android.location.Location
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -37,6 +38,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun MapScreen(
     onNavToSearchScreen: () -> Unit,
+    onNavToSavedScreen: () -> Unit,
     viewModel: LocationWeatherViewModel = koinViewModel()
 ) {
     val markerState = remember { MarkerState() }
@@ -91,17 +93,24 @@ fun MapScreen(
             if (selectedLocation != null) Marker(state = markerState)
         }
 
-        Button(
-            onClick = {
-                permissionLauncher.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION))
-            },
-            modifier = Modifier.padding(top = 70.dp)
-        ) { Text("Найти меня") }
+        Column() {
+            Button(
+                onClick = {
+                    permissionLauncher.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION))
+                },
+                modifier = Modifier.padding(top = 70.dp)
+            ) { Text("Найти меня") }
 
-        Button(
-            onClick = onNavToSearchScreen,
-            modifier = Modifier.padding(top = 70.dp)
-        ) { Text("search") }
+            Button(
+                onClick = onNavToSearchScreen,
+                modifier = Modifier.padding(top = 70.dp)
+            ) { Text("search") }
+
+            Button(
+                onClick = onNavToSavedScreen,
+                modifier = Modifier.padding(top = 70.dp)
+            ) { Text("saved") }
+        }
     }
 }
 
